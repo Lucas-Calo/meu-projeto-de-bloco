@@ -1,13 +1,13 @@
-/* Definindo as variáveis de cor na raiz do projeto */
+/* Cores */
 :root {
-  --purple-primary: #6A1B9A; /* Roxo principal */
-  --purple-dark: #4A148C;    /* Roxo escuro para hover/active */
-  --orange-accent: #FF6F00;  /* Laranja como cor de destaque */
-  --orange-light: #FF8F00;   /* Laranja claro para hover */
-  --background-light: #F3E5F5; /* Fundo claro, tom de lilás */
-  --text-primary: #333;      /* Cor de texto principal */
+  --purple-primary: #6A1B9A; 
+  --purple-dark: #4A148C;    
+  --orange-accent: #FF6F00;
+  --orange-light: #FF8F00;   
+  --background-light: #F3E5F5; 
+  --text-primary: #333;     
   --white: #FFFFFF;
-  --gray-light: #E0E0E0;   /* Cinza claro para bordas/divisores */
+  --gray-light: #E0E0E0;   
 }
 
 /* Estilos globais */

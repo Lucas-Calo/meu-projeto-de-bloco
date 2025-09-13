@@ -11,7 +11,6 @@ const EditarAtividadePage = () => {
   
   const atividadeParaEditar = location.state?.atividade;
 
-  // --- MUDANÇA PRINCIPAL: Um único estado para o formulário ---
   const [formData, setFormData] = useState({
     nome: '',
     descricao: '',
@@ -32,7 +31,6 @@ const EditarAtividadePage = () => {
     }
   }, [atividadeParaEditar]);
 
-  // --- MUDANÇA PRINCIPAL: Uma única função para lidar com todas as alterações ---
   const handleChange = (e) => {
     const { id, value } = e.target; // Pega o 'id' e 'value' do input
     setFormData(prevFormData => ({
@@ -66,16 +64,16 @@ const EditarAtividadePage = () => {
           <input 
             type="text" 
             id="nome" 
-            value={formData.nome} // Vinculado ao estado do objeto
-            onChange={handleChange} // Usa a nova função genérica
+            value={formData.nome} 
+            onChange={handleChange} 
           />
         </div>
         <div className="input-group">
           <label htmlFor="descricao">Descrição</label>
           <textarea 
             id="descricao" 
-            value={formData.descricao} // Vinculado ao estado do objeto
-            onChange={handleChange} // Usa a nova função genérica
+            value={formData.descricao} 
+            onChange={handleChange} 
           />
         </div>
         <div className="input-group">
@@ -83,8 +81,8 @@ const EditarAtividadePage = () => {
           <input 
             type="date" 
             id="dataEntrega" 
-            value={formData.dataEntrega} // Vinculado ao estado do objeto
-            onChange={handleChange} // Usa a nova função genérica
+            value={formData.dataEntrega} 
+            onChange={handleChange} 
           />
         </div>
         <button type="submit" className="submit-button">Salvar Alterações</button>

@@ -6,7 +6,7 @@ import AlunoDashboard from './pages/AlunoDashboard';
 import ProfessorDashboard from './pages/ProfessorDashboard';
 import GestorDashboard from './pages/GestorDashboard';
 import CriarAtividadePage from './pages/CriarAtividadePage';
-import EditarAtividadePage from './pages/EditarAtividadePage'; // Importe a nova página de edição
+import EditarAtividadePage from './pages/EditarAtividadePage';
 import { AtividadeProvider } from './contexts/AtividadeContext';
 
 // Componente para proteger rotas (permanece o mesmo)
@@ -31,7 +31,6 @@ const ProfessorLayout = () => {
       <Routes>
         <Route path="dashboard" element={<ProfessorDashboard />} />
         <Route path="criar-atividade" element={<CriarAtividadePage />} />
-        {/* NOVA ROTA ADICIONADA PARA EDIÇÃO */}
         <Route path="editar-atividade/:id" element={<EditarAtividadePage />} />
       </Routes>
     </AtividadeProvider>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import './LoginPage.css'; // Criaremos este arquivo para estilos
+import './LoginPage.css';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
