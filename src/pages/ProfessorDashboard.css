@@ -1,0 +1,126 @@
+.dashboard-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  color: var(--purple-dark);
+}
+
+.btn-criar {
+  background-color: var(--orange-accent);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.2s;
+  white-space: nowrap; /* Evita que o texto quebre em duas linhas */
+}
+
+.btn-criar:hover {
+  background-color: var(--orange-light);
+}
+
+.atividades-lista h2 {
+  border-bottom: 2px solid var(--gray-light);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--purple-primary);
+}
+
+.atividade-card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.atividade-card h3 {
+  margin-top: 0;
+  color: var(--purple-dark);
+}
+
+.atividade-card span {
+  font-weight: bold;
+  color: var(--text-primary);
+  display: block; /* Garante que o span ocupe a linha toda */
+  word-wrap: break-word; /* Quebra palavras longas se necessário */
+}
+
+.card-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-action {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  color: var(--white);
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-align: center; /* Centraliza o texto */
+}
+
+.btn-edit {
+  background-color: var(--purple-primary);
+}
+
+.btn-edit:hover {
+  background-color: var(--purple-dark);
+}
+
+.btn-delete {
+  background-color: #D32F2F; /* Vermelho para perigo */
+}
+
+.btn-delete:hover {
+  background-color: #B71C1C;
+}
+
+
+/* --- MEDIA QUERY PARA MOBILE --- */
+@media (max-width: 768px) {
+  .dashboard-container {
+    /* Reduz o padding geral da página */
+    padding: 1rem;
+  }
+
+  .dashboard-header {
+    /* Faz o cabeçalho empilhar verticalmente */
+    flex-direction: column;
+    align-items: flex-start; /* Alinha os itens à esquerda */
+    gap: 1rem; /* Adiciona um espaço entre o título e o botão */
+  }
+  
+  .dashboard-header h1 {
+    font-size: 1.8rem; /* Reduz um pouco o título */
+  }
+  
+  .btn-criar {
+    /* Faz o botão ocupar 100% da largura */
+    width: 100%;
+  }
+
+  .card-actions {
+    /* Faz os botões de ação empilharem verticalmente */
+    flex-direction: column;
+  }
+
+  .btn-action {
+    /* Garante que ambos os botões ocupem 100% da largura */
+    width: 100%;
+  }
+}

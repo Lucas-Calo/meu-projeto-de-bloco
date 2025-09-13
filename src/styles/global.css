@@ -1,0 +1,28 @@
+/* Definindo as variáveis de cor na raiz do projeto */
+:root {
+  --purple-primary: #6A1B9A; /* Roxo principal */
+  --purple-dark: #4A148C;    /* Roxo escuro para hover/active */
+  --orange-accent: #FF6F00;  /* Laranja como cor de destaque */
+  --orange-light: #FF8F00;   /* Laranja claro para hover */
+  --background-light: #F3E5F5; /* Fundo claro, tom de lilás */
+  --text-primary: #333;      /* Cor de texto principal */
+  --white: #FFFFFF;
+  --gray-light: #E0E0E0;   /* Cinza claro para bordas/divisores */
+}
+
+/* Estilos globais */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-light);
+  color: var(--text-primary);
+}
+
+*,
+*::after,
+*::before { box-sizing:border-box; }
+
