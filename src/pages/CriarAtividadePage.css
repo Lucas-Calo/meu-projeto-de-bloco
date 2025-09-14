@@ -42,12 +42,10 @@
 /* --- MEDIA QUERY PARA MOBILE --- */
 @media (max-width: 768px) {
   .form-container {
-    /* Reduz o padding externo para o formulário ficar mais largo */
     padding: 1rem;
   }
 
   .activity-form {
-    /* Reduz o padding interno para economizar espaço */
     padding: 1.5rem;
   }
 }

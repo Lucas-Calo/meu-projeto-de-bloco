@@ -38,9 +38,9 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>LearnFlix</h2>
+        <h2 className='text-gradient'>LearnFlix App</h2>
         <div className="input-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">E-mail:</label>
           <input
             type="email"
             id="email"
@@ -50,7 +50,7 @@ const LoginPage = () => {
           />
         </div>
         <div className="input-group">
-          <label htmlFor="password">Senha</label>
+          <label htmlFor="password">Senha:</label>
           <input
             type="password"
             id="password"
