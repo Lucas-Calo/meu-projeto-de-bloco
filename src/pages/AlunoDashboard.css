@@ -1,0 +1,88 @@
+.aluno-dashboard-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.aluno-dashboard-container h1 {
+  color: var(--purple-dark);
+  border-bottom: 2px solid var(--gray-light);
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.sem-atividades-msg {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  padding: 2rem;
+}
+
+.atividade-card-aluno {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  border-left: 5px solid var(--purple-primary);
+  transition: transform 0.2s ease-in-out;
+}
+
+.atividade-card-aluno:hover {
+    transform: translateY(-3px);
+}
+
+.card-header-aluno {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-header-aluno h3 {
+  margin: 0;
+  color: var(--purple-dark);
+}
+
+.status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.status.pendente {
+  background-color: var(--orange-accent);
+}
+
+.status.aguardando,
+.status.entregue {
+  background-color: #1E88E5; 
+}
+
+.data-entrega {
+  font-weight: bold;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Destaque visual para atividades em atraso */
+.atividade-card-aluno.atrasado {
+  border-left: 5px solid #D32F2F;
+  background-color: #FFEBEE;
+}
+
+/* --- MEDIA QUERY PARA MOBILE --- */
+@media (max-width: 768px) {
+  .aluno-dashboard-container {
+    padding: 1rem;
+  }
+
+  .card-header-aluno {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

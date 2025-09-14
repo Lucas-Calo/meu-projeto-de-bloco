@@ -60,7 +60,7 @@ const EditarAtividadePage = () => {
         <h2>Editar Atividade</h2>
         {error && <p className="error-message">{error}</p>}
         <div className="input-group">
-          <label htmlFor="nome">Nome da Atividade</label>
+          <label htmlFor="nome">Nome da Atividade:</label>
           <input 
             type="text" 
             id="nome" 
@@ -69,7 +69,7 @@ const EditarAtividadePage = () => {
           />
         </div>
         <div className="input-group">
-          <label htmlFor="descricao">Descrição</label>
+          <label htmlFor="descricao">Descrição:</label>
           <textarea 
             id="descricao" 
             value={formData.descricao} 
@@ -77,7 +77,7 @@ const EditarAtividadePage = () => {
           />
         </div>
         <div className="input-group">
-          <label htmlFor="dataEntrega">Data de Entrega</label>
+          <label htmlFor="dataEntrega">Data de Entrega:</label>
           <input 
             type="date" 
             id="dataEntrega" 
@@ -85,7 +85,7 @@ const EditarAtividadePage = () => {
             onChange={handleChange} 
           />
         </div>
-        <button type="submit" className="submit-button">Salvar Alterações</button>
+        <button type="submit" className="submit-button">Salvar Alterações!</button>
       </form>
     </div>
   );

@@ -6,15 +6,17 @@ export const AtividadeProvider = ({ children }) => {
   const [atividades, setAtividades] = useState([]);
 
   const addAtividade = (atividade) => {
-    setAtividades(prevAtividades => [...prevAtividades, { ...atividade, id: Date.now() }]);
+    // Sprint 3 inicializado, Adiciona o status padrão 'Pendente' a toda nova atividade
+    setAtividades(prevAtividades => [
+      ...prevAtividades, 
+      { ...atividade, id: Date.now(), status: 'Pendente' }
+    ]);
   };
 
-  // Função para deletar uma atividade (versão limpa)
   const deleteAtividade = (id) => {
     setAtividades(prevAtividades => prevAtividades.filter(atividade => atividade.id !== id));
   };
 
-  // Função para atualizar uma atividade
   const updateAtividade = (id, atividadeAtualizada) => {
     setAtividades(prevAtividades =>
       prevAtividades.map(atividade =>
@@ -24,7 +26,6 @@ export const AtividadeProvider = ({ children }) => {
   };
 
   return (
-    // Disponibiliza as funções para os componentes filhos
     <AtividadeContext.Provider value={{ atividades, addAtividade, deleteAtividade, updateAtividade }}>
       {children}
     </AtividadeContext.Provider>

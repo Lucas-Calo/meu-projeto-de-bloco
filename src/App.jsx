@@ -9,7 +9,6 @@ import CriarAtividadePage from './pages/CriarAtividadePage';
 import EditarAtividadePage from './pages/EditarAtividadePage';
 import { AtividadeProvider } from './contexts/AtividadeContext';
 
-// Componente para proteger rotas (permanece o mesmo)
 const ProtectedRoute = ({ children, allowedProfiles }) => {
   const { user } = useAuth();
   
@@ -24,60 +23,57 @@ const ProtectedRoute = ({ children, allowedProfiles }) => {
   return children;
 };
 
-// Layout para agrupar as rotas do professor, agora com a rota de edição
+// Removi AtividadeProvider foi removido daqui
 const ProfessorLayout = () => {
   return (
-    <AtividadeProvider>
-      <Routes>
-        <Route path="dashboard" element={<ProfessorDashboard />} />
-        <Route path="criar-atividade" element={<CriarAtividadePage />} />
-        <Route path="editar-atividade/:id" element={<EditarAtividadePage />} />
-      </Routes>
-    </AtividadeProvider>
+    <Routes>
+      <Route path="dashboard" element={<ProfessorDashboard />} />
+      <Route path="criar-atividade" element={<CriarAtividadePage />} />
+      <Route path="editar-atividade/:id" element={<EditarAtividadePage />} />
+    </Routes>
   );
 }
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          
-          {/* Rota Protegida do Aluno */}
-          <Route 
-            path="/aluno/dashboard" 
-            element={
-              <ProtectedRoute allowedProfiles={['Aluno']}>
-                <AlunoDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          
-          {/* Rota Protegida do Gestor */}
-          <Route 
-            path="/gestor/dashboard" 
-            element={
-              <ProtectedRoute allowedProfiles={['Gestor']}>
-                <GestorDashboard />
-              </ProtectedRoute>
-            } 
-          />
+      {/* Adicionei o AtividadeProvider aqui */}
+      <AtividadeProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            
+            <Route 
+              path="/aluno/dashboard" 
+              element={
+                <ProtectedRoute allowedProfiles={['Aluno']}>
+                  <AlunoDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            
+            <Route 
+              path="/gestor/dashboard" 
+              element={
+                <ProtectedRoute allowedProfiles={['Gestor']}>
+                  <GestorDashboard />
+                </ProtectedRoute>
+              } 
+            />
 
-          {/* Rotas Protegidas do Professor usando o Layout */}
-          <Route 
-            path="/professor/*" 
-            element={
-              <ProtectedRoute allowedProfiles={['Professor']}>
-                <ProfessorLayout />
-              </ProtectedRoute>
-            } 
-          />
+            <Route 
+              path="/professor/*" 
+              element={
+                <ProtectedRoute allowedProfiles={['Professor']}>
+                  <ProfessorLayout />
+                </ProtectedRoute>
+              } 
+            />
 
-          {/* Rota para qualquer outro caminho não encontrado */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Router>
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Router>
+      </AtividadeProvider>
     </AuthProvider>
   );
 }
