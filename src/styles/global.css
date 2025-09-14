@@ -1,4 +1,3 @@
-/* Cores */
 :root {
   --purple-primary: #6A1B9A; 
   --purple-dark: #4A148C;    
@@ -10,19 +9,19 @@
   --gray-light: #E0E0E0;   
 }
 
-/* Estilos globais */
-body {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: calc(1em + 0.5rem); 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--background-light);
   color: var(--text-primary);
 }
-
-*,
-*::after,
-*::before { box-sizing:border-box; }
-

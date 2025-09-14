@@ -39,7 +39,7 @@ const CriarAtividadePage = () => {
         <h2>Criar Nova Atividade</h2>
         {error && <p className="error-message">{error}</p>}
         <div className="input-group">
-          <label htmlFor="nome">Nome da Atividade</label>
+          <label htmlFor="nome">Nome da Atividade:</label>
           <input
             type="text"
             id="nome"
@@ -48,7 +48,7 @@ const CriarAtividadePage = () => {
           />
         </div>
         <div className="input-group">
-          <label htmlFor="descricao">Descrição</label>
+          <label htmlFor="descricao">Descrição:</label>
           <textarea
             id="descricao"
             value={descricao}
@@ -56,7 +56,7 @@ const CriarAtividadePage = () => {
           />
         </div>
         <div className="input-group">
-          <label htmlFor="dataEntrega">Data de Entrega</label>
+          <label htmlFor="dataEntrega">Data de Entrega:</label>
           <input
             type="date"
             id="dataEntrega"
@@ -64,7 +64,7 @@ const CriarAtividadePage = () => {
             onChange={(e) => setDataEntrega(e.target.value)}
           />
         </div>
-        <button type="submit" className="submit-button">Salvar Atividade</button>
+        <button type="submit" className="submit-button">Salvar Atividade!</button>
       </form>
     </div>
   );
