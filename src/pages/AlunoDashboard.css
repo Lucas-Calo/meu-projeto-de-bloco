@@ -53,19 +53,45 @@
   text-transform: uppercase;
 }
 
-.status.pendente {
-  background-color: var(--orange-accent);
-}
-
-.status.aguardando,
-.status.entregue {
-  background-color: #1E88E5; 
-}
+.status.pendente { background-color: var(--orange-accent); }
+.status.aguardando-avaliação { background-color: #1E88E5; }
+.status.aprovado { background-color: #43A047; }
+.status.reprovado { background-color: #D32F2F; }
 
 .data-entrega {
   font-weight: bold;
   color: var(--text-primary);
   margin: 0;
+}
+
+.btn-entregar {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--purple-primary);
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-entregar:hover {
+  background-color: var(--purple-dark);
+}
+
+.feedback-container {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-left: 3px solid var(--gray-light);
+  border-radius: 4px;
+}
+
+.feedback-container p {
+  margin: 0.5rem 0;
 }
 
 /* Destaque visual para atividades em atraso */

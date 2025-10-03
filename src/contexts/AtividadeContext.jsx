@@ -25,8 +25,17 @@ export const AtividadeProvider = ({ children }) => {
     );
   };
 
+   // Sprint 4: Nova função. Essa função será responsável por alterar o status e adicionar os dados da avaliação.
+  const updateStatusAtividade = (id, novosDados) => {
+    setAtividades(prevAtividades =>
+      prevAtividades.map(atividade =>
+        atividade.id === id ? { ...atividade, ...novosDados } : atividade
+      )
+    );
+  };
+
   return (
-    <AtividadeContext.Provider value={{ atividades, addAtividade, deleteAtividade, updateAtividade }}>
+    <AtividadeContext.Provider value={{ atividades, addAtividade, deleteAtividade, updateAtividade, updateStatusAtividade }}>
       {children}
     </AtividadeContext.Provider>
   );
