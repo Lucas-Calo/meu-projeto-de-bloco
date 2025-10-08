@@ -1,9 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAtividades } from '../contexts/AtividadeContext';
+import { useAuth } from '../contexts/AuthContext';
 import './AlunoDashboard.css';
 
 const AlunoDashboard = () => {
   const { atividades, updateStatusAtividade } = useAtividades();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const formatarData = (dataString) => {
     const [ano, mes, dia] = dataString.split('-');
@@ -18,9 +27,13 @@ const AlunoDashboard = () => {
     new Date(a.dataEntrega) - new Date(b.dataEntrega)
   );
 
-  return (
+   return (
     <div className="aluno-dashboard-container">
-      <h1>Minhas Atividades</h1>
+      <div className="dashboard-header-aluno">
+        <h1>Minhas Atividades</h1>
+        <button onClick={handleLogout} className="btn-logout">Sair</button>
+      </div>
+
       <div className="lista-atividades-aluno">
         {atividadesOrdenadas.length === 0 ? (
           <p className="sem-atividades-msg">Você não tem nenhuma atividade pendente. Parabéns!</p>
@@ -71,5 +84,6 @@ const AlunoDashboard = () => {
     </div>
   );
 };
+
 
 export default AlunoDashboard;

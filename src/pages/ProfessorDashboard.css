@@ -8,11 +8,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
+  border-bottom: 2px solid var(--gray-light);
+  padding-bottom: 1rem;
 }
 
 .dashboard-header h1 {
   color: var(--purple-dark);
+}
+
+.dashboard-actions {
+  margin: 2rem 0;
 }
 
 .btn-criar {
@@ -129,7 +135,21 @@
 .atividade-card.status-aprovado { border-left: 5px solid #43A047; }
 .atividade-card.status-reprovado { border-left: 5px solid #D32F2F; }
 
+.btn-logout {
+  background-color: transparent;
+  color: var(--purple-primary);
+  border: 2px solid var(--purple-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 
+.btn-logout:hover {
+  background-color: var(--purple-primary);
+  color: var(--white);
+}
 
 /* --- MEDIA QUERY PARA MOBILE --- */
 @media (max-width: 768px) {
@@ -138,13 +158,14 @@
   }
 
   .dashboard-header {
-    flex-direction: column;
-    align-items: flex-start; 
-    gap: 1rem; 
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 2px solid var(--gray-light);
+    padding-bottom: 1rem;
   }
   
   .dashboard-header h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
   
   .btn-criar {

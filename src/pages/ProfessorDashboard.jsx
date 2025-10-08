@@ -1,10 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAtividades } from '../contexts/AtividadeContext';
+import { useAuth } from '../contexts/AuthContext';
 import './ProfessorDashboard.css';
 
 const ProfessorDashboard = () => {
   const { atividades, deleteAtividade, updateStatusAtividade } = useAtividades();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja deletar esta atividade?')) {
@@ -42,10 +45,18 @@ const ProfessorDashboard = () => {
     });
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/'); // redirecionamento para a login page
+  }
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h1>Painel do Professor</h1>
+          <button onClick={handleLogout} className="btn-logout">Sair</button>
+      </div>
+      <div className="dashboard-actions">
         <Link to="/professor/criar-atividade" className="btn-criar">
           + Criar Atividade
         </Link>
