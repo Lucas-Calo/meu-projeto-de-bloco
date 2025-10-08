@@ -90,6 +90,46 @@
   background-color: #B71C1C;
 }
 
+/* Sprint 4 */
+.card-header-prof {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-header-prof h3 {
+  margin: 0;
+}
+
+.status-prof {
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.status-prof.pendente { background-color: var(--orange-accent); }
+.status-prof.aguardando-avaliação { background-color: #1E88E5; }
+.status-prof.aprovado { background-color: #43A047; }
+.status-prof.reprovado { background-color: #D32F2F; }
+
+.btn-avaliar {
+  background-color: #43A047; 
+}
+
+.btn-avaliar:hover {
+  background-color: #2E7D32;
+}
+
+/* Borda colorida baseada no status */
+.atividade-card.status-aguardando-avaliação { border-left: 5px solid #1E88E5; }
+.atividade-card.status-aprovado { border-left: 5px solid #43A047; }
+.atividade-card.status-reprovado { border-left: 5px solid #D32F2F; }
+
+
 
 /* --- MEDIA QUERY PARA MOBILE --- */
 @media (max-width: 768px) {
