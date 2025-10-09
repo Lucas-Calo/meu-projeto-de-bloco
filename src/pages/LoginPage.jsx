@@ -37,31 +37,47 @@ const LoginPage = () => {
 
   return (
     <div className="login-container">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h2 className='text-gradient'>LearnFlix App</h2>
-        <div className="input-group">
-          <label htmlFor="email">E-mail:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+      <div className="login-wrapper">
+        <form className="login-form" onSubmit={handleSubmit}>
+          <h2>LearnFlix</h2>
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="password">Senha</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          {error && <p className="error-message">{error}</p>}
+          <button type="submit" className="login-button">Entrar</button>
+        </form>
+
+        {/* --- NOVA SEÇÃO DE DADOS PARA TESTE --- */}
+        <div className="credentials-info">
+          <h4>Dados para Teste (Copiar e Colar)</h4>
+          <p>
+            <strong>Professor:</strong> <code>professor@learnflix.com</code> / <code>123456</code>
+          </p>
+          <p>
+            <strong>Aluno:</strong> <code>aluno@learnflix.com</code> / <code>123456</code>
+          </p>
+          <p>
+            <strong>Gestor:</strong> <code>gestor@learnflix.com</code> / <code>123456</code>
+          </p>
         </div>
-        <div className="input-group">
-          <label htmlFor="password">Senha:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p className="error-message">{error}</p>}
-        <button type="submit" className="login-button">Entrar</button>
-      </form>
+      </div>
     </div>
   );
 };
