@@ -14,20 +14,33 @@ const AlunoDashboard = () => {
     navigate('/');
   };
 
+   // Função de formatação de data aprimorada para evitar bugs de fuso horário
   const formatarData = (dataString) => {
-    const [ano, mes, dia] = dataString.split('-');
+    if (!dataString) return ''; // Retorna vazio se a data for nula
+    const data = new Date(dataString);
+    // Usamos getUTCDate para pegar o dia baseado no Tempo Universal Coordenado
+    const dia = String(data.getUTCDate()).padStart(2, '0');
+    const mes = String(data.getUTCMonth() + 1).padStart(2, '0'); // Meses começam do 0
+    const ano = data.getUTCFullYear();
     return `${dia}/${mes}/${ano}`;
   };
 
   const handleEntregar = (id) => {
-    updateStatusAtividade(id, { status: 'Aguardando Avaliação' });
+    // Cria um novo objeto Date para registrar o momento exato da entrega
+    const dataDeEntregaDoAluno = new Date();
+    
+    // Envia o novo status e a data de entrega para o contexto
+    updateStatusAtividade(id, { 
+      status: 'Aguardando Avaliação',
+      dataEntregaAluno: dataDeEntregaDoAluno.toISOString() // Salva em formato ISO para consistência
+    });
   };
 
   const atividadesOrdenadas = [...atividades].sort((a, b) => 
     new Date(a.dataEntrega) - new Date(b.dataEntrega)
   );
 
-   return (
+  return (
     <div className="aluno-dashboard-container">
       <div className="dashboard-header-aluno">
         <h1>Minhas Atividades</h1>
@@ -57,8 +70,15 @@ const AlunoDashboard = () => {
                   </span>
                 </div>
                 <p className="data-entrega">
-                  Data de Entrega: {formatarData(atividade.dataEntrega)}
+                  <span>Prazo Final:</span> {formatarData(atividade.dataEntrega)}
                 </p>
+
+                {/* EXIBE A DATA QUE O ALUNO ENTREGOU */}
+                {atividade.dataEntregaAluno && (
+                  <p className="data-entrega-aluno">
+                    <span>Entregue em:</span> {formatarData(atividade.dataEntregaAluno)}
+                  </p>
+                )}
 
                 {atividade.status === 'Pendente' && (
                   <button 
@@ -84,6 +104,5 @@ const AlunoDashboard = () => {
     </div>
   );
 };
-
 
 export default AlunoDashboard;

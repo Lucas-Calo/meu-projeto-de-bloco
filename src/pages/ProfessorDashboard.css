@@ -121,6 +121,18 @@
 .status-prof.aguardando-avaliação { background-color: #1E88E5; }
 .status-prof.aprovado { background-color: #43A047; }
 .status-prof.reprovado { background-color: #D32F2F; }
+.status-corrigido {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #43A047;
+  background-color: #EDF7ED;
+  border-radius: 4px;
+}
 
 .btn-avaliar {
   background-color: #43A047; 
@@ -149,6 +161,25 @@
 .btn-logout:hover {
   background-color: var(--purple-primary);
   color: var(--white);
+}
+
+.descricao-atividade {
+  margin-bottom: 1rem;
+}
+
+.data-prazo {
+  font-weight: bold;
+  color: var(--text-primary);
+  display: block;
+  word-wrap: break-word;
+}
+
+.data-entrega-realizada {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #1E88E5;
 }
 
 /* --- MEDIA QUERY PARA MOBILE --- */
