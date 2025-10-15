@@ -8,6 +8,7 @@ import GestorDashboard from './pages/GestorDashboard';
 import CriarAtividadePage from './pages/CriarAtividadePage';
 import EditarAtividadePage from './pages/EditarAtividadePage';
 import { AtividadeProvider } from './contexts/AtividadeContext';
+import DetalhesAtividadePage from './pages/DetalhesAtividadePage';
 
 const ProtectedRoute = ({ children, allowedProfiles }) => {
   const { user } = useAuth();
@@ -37,12 +38,13 @@ const ProfessorLayout = () => {
 function App() {
   return (
     <AuthProvider>
-      {/* Adicionei o AtividadeProvider aqui */}
       <AtividadeProvider>
         <Router>
           <Routes>
+            {/* Rota Pública */}
             <Route path="/" element={<LoginPage />} />
             
+            {/* Rotas Protegidas */}
             <Route 
               path="/aluno/dashboard" 
               element={
@@ -70,6 +72,17 @@ function App() {
               } 
             />
 
+            {/* NOVA ROTA DE DETALHES, acessível a todos os perfis logados */}
+            <Route 
+              path="/atividade/:id"
+              element={
+                <ProtectedRoute allowedProfiles={['Aluno', 'Professor', 'Gestor']}>
+                  <DetalhesAtividadePage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Rota para qualquer outro caminho não encontrado */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>

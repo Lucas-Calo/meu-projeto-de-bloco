@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAtividades } from '../contexts/AtividadeContext';
 import { useAuth } from '../contexts/AuthContext';
+import CitacaoDoDia from '../components/CitacaoDoDia';
 import './ProfessorDashboard.css';
 
 const ProfessorDashboard = () => {
@@ -14,7 +15,8 @@ const ProfessorDashboard = () => {
     navigate('/');
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (e, id) => {
+    e.stopPropagation(); // Impede que o clique no botão ative o link do título.
     if (window.confirm('Tem certeza que deseja deletar esta atividade?')) {
       deleteAtividade(id);
     }
@@ -29,7 +31,8 @@ const ProfessorDashboard = () => {
     return `${dia}/${mes}/${ano}`;
   };
 
-  const handleAvaliar = (id) => {
+  const handleAvaliar = (e, id) => {
+    e.stopPropagation();
     const nota = prompt("Digite a nota da atividade (0 a 10):");
     if (nota === null || nota.trim() === '' || isNaN(nota) || nota < 0 || nota > 10) {
       alert("Nota inválida. A avaliação foi cancelada.");
@@ -58,6 +61,9 @@ const ProfessorDashboard = () => {
         <h1>Painel do Professor</h1>
         <button onClick={handleLogout} className="btn-logout">Sair</button>
       </div>
+      
+      <CitacaoDoDia />
+
       <div className="dashboard-actions">
         <Link to="/professor/criar-atividade" className="btn-criar">
           + Criar Atividade
@@ -70,14 +76,18 @@ const ProfessorDashboard = () => {
         ) : (
           atividades.map(atividade => (
             <div key={atividade.id} className={`atividade-card status-${atividade.status?.toLowerCase().replace(' ', '-')}`}>
-              <div className="card-header-prof">
-                <h3>{atividade.nome}</h3>
-                {atividade.status && (
-                  <span className={`status-prof ${atividade.status.toLowerCase().replace(' ', '-')}`}>
-                    {atividade.status}
-                  </span>
-                )}
-              </div>
+              
+              <Link to={`/atividade/${atividade.id}`} className="card-link-header">
+                <div className="card-header-prof">
+                  <h3>{atividade.nome}</h3>
+                  {atividade.status && (
+                    <span className={`status-prof ${atividade.status.toLowerCase().replace(' ', '-')}`}>
+                      {atividade.status}
+                    </span>
+                  )}
+                </div>
+              </Link>
+
               <p className="descricao-atividade">{atividade.descricao}</p>
               <span className="data-prazo">
                 Prazo Final: {formatarData(atividade.dataEntrega)}
@@ -95,7 +105,7 @@ const ProfessorDashboard = () => {
                 ) : (
                   <>
                     {atividade.status === 'Aguardando Avaliação' && (
-                      <button onClick={() => handleAvaliar(atividade.id)} className="btn-action btn-avaliar">
+                      <button onClick={(e) => handleAvaliar(e, atividade.id)} className="btn-action btn-avaliar">
                         Avaliar
                       </button>
                     )}
@@ -103,10 +113,11 @@ const ProfessorDashboard = () => {
                       to={`/professor/editar-atividade/${atividade.id}`} 
                       state={{ atividade: atividade }}
                       className="btn-action btn-edit"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       Editar
                     </Link>
-                    <button onClick={() => handleDelete(atividade.id)} className="btn-action btn-delete">
+                    <button onClick={(e) => handleDelete(e, atividade.id)} className="btn-action btn-delete">
                       Deletar
                     </button>
                   </>

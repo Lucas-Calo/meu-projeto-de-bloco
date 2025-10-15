@@ -130,6 +130,13 @@
   font-weight: bold;
 }
 
+
+.atividade-card, .atividade-card-aluno {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 /* Pequeno ajuste para diferenciar os labels de data */
 .data-entrega span, .data-entrega-aluno span {
     font-weight: normal;

@@ -182,6 +182,12 @@
   color: #1E88E5;
 }
 
+.atividade-card, .atividade-card-aluno {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 /* --- MEDIA QUERY PARA MOBILE --- */
 @media (max-width: 768px) {
   .dashboard-container {

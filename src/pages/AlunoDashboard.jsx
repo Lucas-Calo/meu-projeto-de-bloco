@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAtividades } from '../contexts/AtividadeContext';
 import { useAuth } from '../contexts/AuthContext';
 import './AlunoDashboard.css';
+import CitacaoDoDia from '../components/CitacaoDoDia';
+
 
 const AlunoDashboard = () => {
   const { atividades, updateStatusAtividade } = useAtividades();
@@ -46,6 +48,9 @@ const AlunoDashboard = () => {
         <h1>Minhas Atividades</h1>
         <button onClick={handleLogout} className="btn-logout">Sair</button>
       </div>
+
+         {/* 2. Adiciona o componente da citação */}
+      <CitacaoDoDia />
 
       <div className="lista-atividades-aluno">
         {atividadesOrdenadas.length === 0 ? (
