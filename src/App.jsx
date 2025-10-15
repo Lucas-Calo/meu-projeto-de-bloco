@@ -24,7 +24,6 @@ const ProtectedRoute = ({ children, allowedProfiles }) => {
   return children;
 };
 
-// Removi AtividadeProvider foi removido daqui
 const ProfessorLayout = () => {
   return (
     <Routes>
