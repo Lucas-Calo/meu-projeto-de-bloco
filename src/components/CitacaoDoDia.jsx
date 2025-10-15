@@ -8,19 +8,23 @@ const CitacaoDoDia = () => {
   useEffect(() => {
     const fetchCitacao = async () => {
       try {
-        const response = await fetch('https://api.quotable.io/random');
+        // --- MUDANÇA: Nova URL da API, as em português não estavam funcionando corretamente.---
+        const response = await fetch('https://dummyjson.com/quotes/random');
+        
         const data = await response.json();
-        setCitacao({ texto: data.content, autor: data.author });
+
+        setCitacao({ texto: data.quote, autor: data.author });
+
       } catch (error) {
         console.error("Erro ao buscar citação:", error);
-        setCitacao({ texto: "A jornada de mil milhas começa com um único passo.", autor: "Lao Tsé" });
+        setCitacao({ texto: "A persistência realiza o impossível.", autor: "Provérbio Chinês" });
       } finally {
         setLoading(false);
       }
     };
 
     fetchCitacao();
-  }, []); // O array vazio [] garante que isso rode apenas uma vez
+  }, []);
 
   return (
     <div className="citacao-container">
