@@ -1,7 +1,7 @@
 .detalhes-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem; 
 }
 
 .btn-voltar {
@@ -16,16 +16,19 @@
 
 .detalhes-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; 
+  align-items: flex-start;
+  gap: 1rem;
   border-bottom: 2px solid var(--gray-light);
   padding-bottom: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .detalhes-header h1 {
   margin: 0;
   color: var(--purple-dark);
+  font-size: 1.5rem;
+  word-break: break-word;
 }
 
 .status-detalhes {
@@ -56,11 +59,12 @@
   font-size: 1.2rem;
   border-bottom: 1px solid var(--gray-light);
   padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .datas-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
 }
 
@@ -68,16 +72,99 @@
   background-color: #f7f3fa;
 }
 
-@media (max-width: 768px) {
+/* --- Estilos para a nova Seção de Ações --- */
+.detalhes-card.acoes {
+  background-color: #f7f3fa;
+  border: 1px dashed var(--purple-primary);
+}
+
+.detalhes-card.acoes h2 {
+  border: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.acao-info {
+  font-style: italic;
+  color: #666;
+  margin: 0;
+}
+
+/* Estilos dos Botões de Ação */
+.btn-acao {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+}
+
+.btn-entregar { background-color: var(--purple-primary); color: var(--white); }
+.btn-entregar:hover { background-color: var(--purple-dark); }
+
+.btn-avaliar { background-color: #43A047; color: var(--white); }
+.btn-avaliar:hover { background-color: #2E7D32; }
+
+.btn-edit { background-color: var(--orange-accent); color: var(--white); }
+.btn-edit:hover { background-color: var(--orange-light); }
+
+.btn-delete { background-color: #D32F2F; color: var(--white); }
+.btn-delete:hover { background-color: #B71C1C; }
+
+.status-corrigido {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #43A047;
+  background-color: #EDF7ED;
+  border-radius: 4px;
+}
+
+/*  Estilos para Telas Maiores (Desktop) */
+@media (min-width: 769px) {
   .detalhes-container {
-    padding: 1rem;
+    padding: 2rem; /* Padding maior no desktop */
   }
+
   .detalhes-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    flex-direction: row; /* Lado a lado no desktop */
+    align-items: center;
+    margin-bottom: 2rem; /* Margem maior no desktop */
   }
+
+  .detalhes-header h1 {
+    font-size: 1.8rem; /* Título maior no desktop */
+  }
+
   .datas-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr; /* Duas colunas no desktop */
+  }
+
+  /* ALINHAMENTO DOS BOTÕES */
+  
+  .acoes-botoes-container {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .acoes-botoes-container .btn-acao {
+    flex: 1; 
+    width: auto; 
+    margin-bottom: 0;
+  }
+  
+  .detalhes-card.acoes > .btn-acao {
+     width: 100%;
   }
 }

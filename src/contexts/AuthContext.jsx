@@ -6,14 +6,15 @@ const AuthContext = createContext(null);
 const mockAuth = async (email, password) => {
   // Em um projeto real, isso seria uma chamada para uma API
   const users = [
-    { email: 'aluno@learnflix.com', password: '123456', profile: 'Aluno' },
-    { email: 'professor@learnflix.com', password: '123456', profile: 'Professor' },
-    { email: 'gestor@learnflix.com', password: '123456', profile: 'Gestor' },
+    { email: 'aluno@learnflix.com', password: '123456', profile: 'Aluno', name: 'Lucas Caló' },
+    { email: 'professor@learnflix.com', password: '123456', profile: 'Professor', name: 'Professor Thiago Vieira de Aguiar' },
+    { email: 'gestor@learnflix.com', password: '123456', profile: 'Gestor', name: 'Gestor Admin' },
   ];
 
-  const user = users.find(u => u.email === email && u.password === password);
+const user = users.find(u => u.email === email && u.password === password);
   if (user) {
-    return { success: true, user: { email: user.email, profile: user.profile } };
+    // Garantir que o nome seja salvo no estado do usuário
+    return { success: true, user: { email: user.email, profile: user.profile, name: user.name } };
   }
   return { success: false, message: 'Credenciais inválidas' };
 };

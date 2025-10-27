@@ -1,112 +1,63 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { useAtividades } from '../contexts/AtividadeContext';
-import { useAuth } from '../contexts/AuthContext';
-import './AlunoDashboard.css';
+import DashboardLayout from '../components/DashboardLayout';
 import CitacaoDoDia from '../components/CitacaoDoDia';
-
+import CardAtividade from '../components/CardAtividade';
+import './AlunoDashboard.css';
 
 const AlunoDashboard = () => {
-  const { atividades, updateStatusAtividade } = useAtividades();
-  const { logout } = useAuth();
-  const navigate = useNavigate();
+  const { atividades } = useAtividades(); 
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
+  // Lógica da Citação
+  const [citacao, setCitacao] = useState(null);
+  const [loadingCitacao, setLoadingCitacao] = useState(true);
 
-   // Função de formatação de data aprimorada para evitar bugs de fuso horário
-  const formatarData = (dataString) => {
-    if (!dataString) return ''; // Retorna vazio se a data for nula
-    const data = new Date(dataString);
-    // Usamos getUTCDate para pegar o dia baseado no Tempo Universal Coordenado
-    const dia = String(data.getUTCDate()).padStart(2, '0');
-    const mes = String(data.getUTCMonth() + 1).padStart(2, '0'); // Meses começam do 0
-    const ano = data.getUTCFullYear();
-    return `${dia}/${mes}/${ano}`;
-  };
-
-  const handleEntregar = (id) => {
-    // Cria um novo objeto Date para registrar o momento exato da entrega
-    const dataDeEntregaDoAluno = new Date();
-    
-    // Envia o novo status e a data de entrega para o contexto
-    updateStatusAtividade(id, { 
-      status: 'Aguardando Avaliação',
-      dataEntregaAluno: dataDeEntregaDoAluno.toISOString() // Salva em formato ISO para consistência
-    });
-  };
-
+  useEffect(() => {
+    const fetchCitacao = async () => {
+      // ... (lógica de fetch da citação) ...
+      try {
+        const response = await fetch('https://dummyjson.com/quotes/random');
+        const data = await response.json();
+        setCitacao({ texto: data.quote, autor: data.author });
+      } catch (error) {
+        console.error("Erro ao buscar citação:", error);
+        setCitacao({ texto: "A persistência realiza o impossível.", autor: "Provérbio Chinês" });
+      } finally {
+        setLoadingCitacao(false);
+      }
+    };
+    fetchCitacao();
+  }, []);
+  
+  // 3. Lógica de ordenação
   const atividadesOrdenadas = [...atividades].sort((a, b) => 
     new Date(a.dataEntrega) - new Date(b.dataEntrega)
   );
 
   return (
-    <div className="aluno-dashboard-container">
-      <div className="dashboard-header-aluno">
-        <h1>Minhas Atividades</h1>
-        <button onClick={handleLogout} className="btn-logout">Sair</button>
-      </div>
-
-         {/* 2. Adiciona o componente da citação */}
-      <CitacaoDoDia />
+    <DashboardLayout title="Minhas Atividades">
+      
+      <CitacaoDoDia 
+        loading={loadingCitacao} 
+        texto={citacao?.texto} 
+        autor={citacao?.autor} 
+      />
 
       <div className="lista-atividades-aluno">
         {atividadesOrdenadas.length === 0 ? (
           <p className="sem-atividades-msg">Você não tem nenhuma atividade pendente. Parabéns!</p>
         ) : (
-          atividadesOrdenadas.map(atividade => {
-            const hoje = new Date();
-            const dataEntrega = new Date(atividade.dataEntrega);
-            hoje.setHours(0, 0, 0, 0); 
-            
-            const isAtrasado = dataEntrega < hoje && atividade.status === 'Pendente';
-
-            return (
-              <div 
-                key={atividade.id} 
-                className={`atividade-card-aluno ${isAtrasado ? 'atrasado' : ''}`}
-              >
-                <div className="card-header-aluno">
-                  <h3>{atividade.nome}</h3>
-                  <span className={`status ${atividade.status.toLowerCase().replace(' ', '-')}`}>
-                    {atividade.status}
-                  </span>
-                </div>
-                <p className="data-entrega">
-                  <span>Prazo Final:</span> {formatarData(atividade.dataEntrega)}
-                </p>
-
-                {/* EXIBE A DATA QUE O ALUNO ENTREGOU */}
-                {atividade.dataEntregaAluno && (
-                  <p className="data-entrega-aluno">
-                    <span>Entregue em:</span> {formatarData(atividade.dataEntregaAluno)}
-                  </p>
-                )}
-
-                {atividade.status === 'Pendente' && (
-                  <button 
-                    onClick={() => handleEntregar(atividade.id)} 
-                    className="btn-entregar"
-                  >
-                    Entregar Atividade
-                  </button>
-                )}
-
-                {(atividade.status === 'Aprovado' || atividade.status === 'Reprovado') && (
-                  <div className="feedback-container">
-                    <strong>Avaliação do Professor:</strong>
-                    <p>Nota: {atividade.nota}</p>
-                    <p>Feedback: {atividade.feedback}</p>
-                  </div>
-                )}
-              </div>
-            );
-          })
+          atividadesOrdenadas.map(atividade => (
+            //Renderiza o componente de Card reutilizável
+            <CardAtividade 
+              key={atividade.id} 
+              atividade={atividade} 
+              perfil="aluno"
+            />
+          ))
         )}
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

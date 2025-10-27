@@ -1,13 +1,14 @@
+/* Base (Mobile First) */
 .form-container {
   display: flex;
   justify-content: center;
-  padding: 2rem;
+  padding: 1rem; 
   min-height: 100vh;
 }
 
 .activity-form {
   background: var(--white);
-  padding: 2rem;
+  padding: 1.5rem; 
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -20,15 +21,31 @@
   margin-bottom: 1.5rem;
 }
 
+.input-group {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
 .input-group input,
 .input-group textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--gray-light);
   border-radius: 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
   font-family: inherit;
+  font-size: 1rem;
+  box-sizing: border-box; 
+}
+
+.input-group textarea {
+  resize: vertical;
+  min-height: 100px;
 }
 
 .submit-button {
@@ -49,14 +66,28 @@
   background-color: var(--orange-light);
 }
 
+.btn-voltar {
+  background: none;
+  border: none;
+  color: var(--purple-primary);
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  align-self: flex-start; 
+}
 
-/* --- MEDIA QUERY PARA MOBILE --- */
-@media (max-width: 768px) {
+.btn-voltar:hover {
+  text-decoration: underline;
+}
+
+/* Estilos para Telas Maiores (Desktop) */
+@media (min-width: 769px) {
   .form-container {
-    padding: 1rem;
+    padding: 2rem; 
   }
 
   .activity-form {
-    padding: 1.5rem;
+    padding: 2rem; 
   }
 }

@@ -1,0 +1,86 @@
+/* Base (Mobile First)*/
+.dashboard-layout-container {
+  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.dashboard-layout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--gray-light);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem; 
+}
+
+.dashboard-layout-header h1 {
+  color: var(--purple-dark);
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.btn-logout {
+  background-color: transparent;
+  color: var(--purple-primary);
+  border: 2px solid var(--purple-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap; 
+}
+
+.btn-logout:hover {
+  background-color: var(--purple-primary);
+  color: var(--white);
+}
+
+.dashboard-layout-content {
+  width: 100%;
+}
+
+.header-title-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+/* Estilo para o nome do usuário */
+.header-username {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666;
+}
+
+.dashboard-layout-header h1 {
+  margin: 0;
+}
+
+
+/* Estilos para Telas Maiores (Desktop)*/
+@media (min-width: 769px) {
+  .dashboard-layout-container {
+    padding: 2rem; 
+  }
+
+  .dashboard-layout-header {
+    margin-bottom: 2rem;
+  }
+
+  .dashboard-layout-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .header-title-group {
+    flex-direction: row;
+    align-items: baseline; 
+    gap: 1rem; 
+  }
+
+  .header-username {
+    font-size: 1rem;
+  }
+}

@@ -1,15 +1,59 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAtividades } from '../contexts/AtividadeContext';
+import { useAuth } from '../contexts/AuthContext';
 import './DetalhesAtividadePage.css';
 
 const DetalhesAtividadePage = () => {
-  const { id } = useParams(); // Ele pega o ID da atividade da URL
-  const { atividades } = useAtividades();
+  const { id } = useParams();
   const navigate = useNavigate();
+  
+  const { user } = useAuth(); 
+  const { atividades, updateStatusAtividade, deleteAtividade } = useAtividades();
 
-  // Encontra a atividade específica na nossa lista do contexto
+  // Encontra a atividade correspondente
   const atividade = atividades.find(a => a.id === parseInt(id));
+
+  // --- Funções de Ação ---
+
+  const handleEntregar = (e) => {
+    e.preventDefault();
+    const dataDeEntregaDoAluno = new Date();
+    updateStatusAtividade(parseInt(id), { 
+      status: 'Aguardando Avaliação',
+      dataEntregaAluno: dataDeEntregaDoAluno.toISOString()
+    });
+  };
+
+  const handleAvaliar = (e) => {
+    e.preventDefault();
+    const nota = prompt("Digite a nota da atividade (0 a 10):");
+    if (nota === null || nota.trim() === '' || isNaN(nota) || nota < 0 || nota > 10) {
+      alert("Nota inválida. A avaliação foi cancelada.");
+      return;
+    }
+    const feedback = prompt("Digite um feedback para o aluno:");
+    if (feedback === null) return;
+
+    const notaNum = parseFloat(nota);
+    const statusFinal = notaNum >= 6 ? 'Aprovado' : 'Reprovado';
+
+    updateStatusAtividade(parseInt(id), {
+      status: statusFinal,
+      nota: notaNum,
+      feedback: feedback.trim() === '' ? 'Sem feedback.' : feedback
+    });
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    if (window.confirm('Tem certeza que deseja deletar esta atividade?')) {
+      deleteAtividade(parseInt(id));
+      navigate('/professor/dashboard');
+    }
+  };
+
+  // --- Função Auxiliar ---
 
   const formatarData = (dataString) => {
     if (!dataString) return 'N/A';
@@ -29,17 +73,64 @@ const DetalhesAtividadePage = () => {
     );
   }
 
+  // Variáveis de controle
+  const isProfessor = user.profile === 'Professor';
+  const isAluno = user.profile === 'Aluno';
+  const status = atividade.status;
+
   return (
     <div className="detalhes-container">
       <button onClick={() => navigate(-1)} className="btn-voltar">← Voltar</button>
       
       <div className="detalhes-header">
         <h1>{atividade.nome}</h1>
-        <span className={`status-detalhes ${atividade.status?.toLowerCase().replace(' ', '-')}`}>
-          {atividade.status}
+        <span className={`status-detalhes ${status?.toLowerCase().replace(' ', '-')}`}>
+          {status}
         </span>
       </div>
 
+      {/* --- Seção de Ações --- */}
+      <div className="detalhes-card acoes">
+        <h2>Ações</h2>
+        
+        {/* Ações do Aluno */}
+        {isAluno && status === 'Pendente' && (
+          <button onClick={handleEntregar} className="btn-acao btn-entregar">
+            Entregar Atividade
+          </button>
+        )}
+        {isAluno && status !== 'Pendente' && (
+          <p className="acao-info">Você já entregou esta atividade.</p>
+        )}
+
+        {/* Ações do Professor */}
+        {isProfessor && (status === 'Aprovado' || status === 'Reprovado') && (
+           <span className="status-corrigido">✓ Atividade Corrigida</span>
+        )}
+
+        {/* Agrupa os botões do professor para alinhamento correto (a correção) */}
+        {isProfessor && (status === 'Pendente' || status === 'Aguardando Avaliação') && (
+          <div className="acoes-botoes-container">
+            {status === 'Aguardando Avaliação' && (
+              <button onClick={handleAvaliar} className="btn-acao btn-avaliar">
+                Avaliar Entrega
+              </button>
+            )}
+            <Link 
+              to={`/professor/editar-atividade/${atividade.id}`} 
+              state={{ atividade: atividade }}
+              className="btn-acao btn-edit"
+            >
+              Editar Atividade
+            </Link>
+            <button onClick={handleDelete} className="btn-acao btn-delete">
+              Deletar Atividade
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* --- Resto dos Detalhes --- */}
       <div className="detalhes-card">
         <h2>Descrição</h2>
         <p>{atividade.descricao}</p>
@@ -56,8 +147,7 @@ const DetalhesAtividadePage = () => {
         </div>
       </div>
 
-      {/* Para exibir a avaliação somente se existir */}
-      {(atividade.status === 'Aprovado' || atividade.status === 'Reprovado') && (
+      {(status === 'Aprovado' || status === 'Reprovado') && (
         <div className="detalhes-card avaliacao">
           <h2>Avaliação do Professor</h2>
           <p><strong>Nota:</strong> {atividade.nota}</p>

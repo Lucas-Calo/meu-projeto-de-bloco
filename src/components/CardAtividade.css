@@ -1,0 +1,105 @@
+/* Base (Mobile First)*/
+.card-atividade {
+  display: block;
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+  border-left: 5px solid transparent;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-atividade:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Perfil Específico --- */
+.card-atividade.aluno {
+  border-left-color: var(--purple-primary);
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column; /* Mobile first: empilhado */
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.card-header h3 {
+  margin: 0;
+  color: var(--purple-dark);
+  font-size: 1.2rem;
+  word-break: break-word; 
+}
+
+/* --- Status Tags (Unificado) --- */
+.status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.status.pendente { background-color: var(--orange-accent); }
+.status.aguardando-avaliação { background-color: #1E88E5; }
+.status.aprovado { background-color: #43A047; }
+.status.reprovado { background-color: #D32F2F; }
+
+/* --- Corpo --- */
+.descricao {
+  font-size: 0.95rem;
+  color: #333;
+  margin: 0 0 1rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+}
+
+.datas-container {
+  font-size: 0.9rem;
+}
+
+.data-prazo {
+  font-weight: bold;
+  color: var(--text-primary);
+  display: block;
+}
+
+.data-entrega-aluno {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: #43A047;
+}
+
+/* --- Modificadores de Status --- */
+
+/* Destaque de Atraso (Aluno) */
+.card-atividade.aluno.atrasado {
+  border-left-color: #D32F2F;
+  background-color: #FFEBEE;
+}
+
+/* Destaques de Status (Professor) */
+.card-atividade.professor.status-aguardando-avaliação { border-left-color: #1E88E5; }
+.card-atividade.professor.status-aprovado { border-left-color: #43A047; }
+.card-atividade.professor.status-reprovado { border-left-color: #D32F2F; }
+
+/* Estilos para telas maiores (Desktop) */
+@media (min-width: 769px) {
+  .card-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

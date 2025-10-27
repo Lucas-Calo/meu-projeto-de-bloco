@@ -1,3 +1,4 @@
+/* Base (Mobile First)*/
 .login-container {
   display: flex;
   justify-content: center;
@@ -13,11 +14,9 @@
 
 .login-form {
   background: var(--white);
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
   text-align: center;
 }
 
@@ -63,23 +62,14 @@
 }
 
 .error-message {
-    color: red;
-    margin-bottom: 1rem;
+  color: red;
+  margin-bottom: 1rem;
 }
 
-
-.text-gradient {
-  background-image: linear-gradient(to right, #6A1B9A, #AB47BC)!important; 
-  -webkit-background-clip: text!important;
-  background-clip: text!important;
-  color: transparent!important;
-
-}
-
-/* --- ESTILOS PARA DADOS DE TESTE --- */
+/* Estilos para dados de teste */
 .credentials-info {
   margin-top: 1.5rem;
-  padding: 1rem;
+  padding: 1.5rem; 
   background: #f7f3fa;
   border: 1px dashed var(--purple-primary);
   border-radius: 8px;
@@ -107,9 +97,13 @@
   user-select: all;
 }
 
-/* --- MEDIA QUERY PARA MOBILE --- */
-@media (max-width: 768px) {
+/* Estilos para Telas Maiores (Desktop)  */
+@media (min-width: 769px) {
   .login-form {
-    padding: 1.5rem;
+    padding: 2rem; 
+  }
+
+  .credentials-info {
+    padding: 1rem;
   }
 }
