@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import Navbar from './Navbar';
 import './DashboardLayout.css';
 
 const DashboardLayout = ({ title, children }) => {
@@ -12,20 +13,20 @@ const DashboardLayout = ({ title, children }) => {
     navigate('/');
   };
 
-  return (
-    <div className="dashboard-layout-container">
-      <div className="dashboard-layout-header">
-        
-        <div className="header-title-group">
-          <h1>{title}</h1>
-          {/* Exibe o nome do usuário se ele existir */}
-          {user && <span className="header-username">Olá, {user.name}</span>}
+return (
+    <div className="dashboard-layout">
+      <Navbar /> 
+      <div className="dashboard-layout-container">
+        <div className="dashboard-layout-header">
+          <div className="header-title-group">
+            <h1>{title}</h1>
+            {user && <span className="header-username">Olá, {user.name}</span>}
+          </div>
+          <button onClick={handleLogout} className="btn-logout">Sair</button>
         </div>
-        
-        <button onClick={handleLogout} className="btn-logout">Sair</button>
-      </div>
-      <div className="dashboard-layout-content">
-        {children}
+        <div className="dashboard-layout-content">
+          {children}
+        </div>
       </div>
     </div>
   );

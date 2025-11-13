@@ -1,4 +1,9 @@
 /* Base (Mobile First)*/
+
+.dashboard-layout {
+  width: 100%;
+}
+
 .dashboard-layout-container {
   padding: 1rem;
   max-width: 900px;
