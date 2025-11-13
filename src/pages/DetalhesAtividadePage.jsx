@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAtividades } from '../contexts/AtividadeContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useSwipeable } from 'react-swipeable';
 import './DetalhesAtividadePage.css';
 
 const DetalhesAtividadePage = () => {
@@ -64,6 +65,13 @@ const DetalhesAtividadePage = () => {
     return `${dia}/${mes}/${ano}`;
   };
 
+  // Configuração do Gesto de Arrastar
+  const handlers = useSwipeable({
+    onSwipedRight: () => navigate(-1), // Volta para a página anterior
+    preventScrollOnSwipe: true,
+    trackMouse: true // Permite testar com o mouse
+  });
+
   if (!atividade) {
     return (
       <div className="detalhes-container">
@@ -79,7 +87,8 @@ const DetalhesAtividadePage = () => {
   const status = atividade.status;
 
   return (
-    <div className="detalhes-container">
+    // Aplica os 'handlers' do swipe na div principal
+    <div className="detalhes-container" {...handlers}>
       <button onClick={() => navigate(-1)} className="btn-voltar">← Voltar</button>
       
       <div className="detalhes-header">
@@ -89,7 +98,7 @@ const DetalhesAtividadePage = () => {
         </span>
       </div>
 
-      {/* --- Seção de Ações --- */}
+      {/* Seção de Ações */}
       <div className="detalhes-card acoes">
         <h2>Ações</h2>
         
@@ -108,7 +117,7 @@ const DetalhesAtividadePage = () => {
            <span className="status-corrigido">✓ Atividade Corrigida</span>
         )}
 
-        {/* Agrupa os botões do professor para alinhamento correto (a correção) */}
+        {/* Agrupa os botões do professor para alinhamento correto */}
         {isProfessor && (status === 'Pendente' || status === 'Aguardando Avaliação') && (
           <div className="acoes-botoes-container">
             {status === 'Aguardando Avaliação' && (
@@ -130,7 +139,7 @@ const DetalhesAtividadePage = () => {
         )}
       </div>
 
-      {/* --- Resto dos Detalhes --- */}
+      {/* Resto dos Detalhes*/}
       <div className="detalhes-card">
         <h2>Descrição</h2>
         <p>{atividade.descricao}</p>
