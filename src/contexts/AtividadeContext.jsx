@@ -1,12 +1,28 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AtividadeContext = createContext();
 
 export const AtividadeProvider = ({ children }) => {
-  const [atividades, setAtividades] = useState([]);
+  
+  // MUDANÇA 1: Leitura Inicial
+  // Usei uma função no useState para que ele só leia o localStorage
+  // uma vez, quando o componente é montado.
+  const [atividades, setAtividades] = useState(() => {
+    const dadosSalvos = localStorage.getItem('atividades');
+    if (dadosSalvos) {
+      return JSON.parse(dadosSalvos); // Retorna os dados salvos
+    }
+    return []; // Retorna um array vazio se não houver nada salvo
+  });
+
+  // MUDANÇA 2: Gravação Automática
+  // Este useEffect "escuta" por qualquer mudança no estado 'atividades'
+  // e o salva no localStorage.
+  useEffect(() => {
+    localStorage.setItem('atividades', JSON.stringify(atividades));
+  }, [atividades]); // O 'gatilho' é o próprio estado 'atividades'
 
   const addAtividade = (atividade) => {
-    // Sprint 3 inicializado, Adiciona o status padrão 'Pendente' a toda nova atividade
     setAtividades(prevAtividades => [
       ...prevAtividades, 
       { ...atividade, id: Date.now(), status: 'Pendente' }
@@ -25,7 +41,6 @@ export const AtividadeProvider = ({ children }) => {
     );
   };
 
-   // Sprint 4: Nova função. Essa função será responsável por alterar o status e adicionar os dados da avaliação.
   const updateStatusAtividade = (id, novosDados) => {
     setAtividades(prevAtividades =>
       prevAtividades.map(atividade =>
@@ -35,7 +50,13 @@ export const AtividadeProvider = ({ children }) => {
   };
 
   return (
-    <AtividadeContext.Provider value={{ atividades, addAtividade, deleteAtividade, updateAtividade, updateStatusAtividade }}>
+    <AtividadeContext.Provider value={{ 
+      atividades, 
+      addAtividade, 
+      deleteAtividade, 
+      updateAtividade, 
+      updateStatusAtividade 
+    }}>
       {children}
     </AtividadeContext.Provider>
   );
