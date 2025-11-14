@@ -1,28 +1,49 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useMemo } from 'react';
+import DashboardLayout from '../components/DashboardLayout';
+import { useAtividades } from '../contexts/AtividadeContext';
+import { getAllUsers } from '../services/userService';
 import './GestorDashboard.css';
 
 const GestorDashboard = () => {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
+  const { atividades } = useAtividades();
+  const todosUsuarios = getAllUsers(); // Puxa a lista de usuários do serviço
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
+  // Calcula as estatísticas
+  const stats = useMemo(() => {
+    const totalAlunos = todosUsuarios.filter(u => u.profile === 'Aluno').length;
+    const totalProfessores = todosUsuarios.filter(u => u.profile === 'Professor').length;
+    const totalAtividades = atividades.length;
+    
+    return { totalAlunos, totalProfessores, totalAtividades };
+  }, [atividades, todosUsuarios]);
 
   return (
-    <div className="gestor-dashboard-container">
-      <div className="dashboard-header-gestor">
-        <h1>Painel do Gestor</h1>
-        <button onClick={handleLogout} className="btn-logout">Sair</button>
+    <DashboardLayout title="Painel do Gestor">
+      {/* 3. Renderiza os cards de estatística */}
+      <div className="stats-container">
+        <div className="stat-card">
+          <h2>Alunos Cadastrados</h2>
+          <p>{stats.totalAlunos}</p>
+        </div>
+        <div className="stat-card">
+          <h2>Professores Cadastrados</h2>
+          <p>{stats.totalProfessores}</p>
+        </div>
+        <div className="stat-card">
+          <h2>Atividades Criadas</h2>
+          <p>{stats.totalAtividades}</p>
+        </div>
       </div>
-      <div className="content-gestor">
-        {/* O conteúdo do Sprint 5 virá aqui */}
-        <p>Em breve, estatísticas e relatórios estarão disponíveis aqui.</p>
+
+      {/* Espaço para as próximas funcionalidades (Item 2 e 3 do backlog) */}
+      <div className="gestor-listas">
+        <h2>Listas Gerais (Em breve)</h2>
+        <p>Em breve, você poderá ver e gerenciar todos os usuários e atividades aqui.</p>
+        <h2>Cadastrar Novo Usuário (Em breve)</h2>
+        <p>Em breve, o formulário de cadastro de novos usuários estará aqui.</p>
       </div>
-    </div>
+
+    </DashboardLayout>
   );
 };
 

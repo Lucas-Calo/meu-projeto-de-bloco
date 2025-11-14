@@ -1,30 +1,14 @@
 import React, { createContext, useState, useContext } from 'react';
+import { login as userServiceLogin } from '../services/userService';
 
 const AuthContext = createContext(null);
-
-// Mock de uma função de autenticação
-const mockAuth = async (email, password) => {
-  // Em um projeto real, isso seria uma chamada para uma API
-  const users = [
-    { email: 'aluno@learnflix.com', password: '123456', profile: 'Aluno', name: 'Lucas Caló' },
-    { email: 'professor@learnflix.com', password: '123456', profile: 'Professor', name: 'Professor Thiago Vieira de Aguiar' },
-    { email: 'gestor@learnflix.com', password: '123456', profile: 'Gestor', name: 'Gestor Admin' },
-  ];
-
-const user = users.find(u => u.email === email && u.password === password);
-  if (user) {
-    // Garantir que o nome seja salvo no estado do usuário
-    return { success: true, user: { email: user.email, profile: user.profile, name: user.name } };
-  }
-  return { success: false, message: 'Credenciais inválidas' };
-};
-
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = async (email, password) => {
-    const response = await mockAuth(email, password);
+    // Chama o serviço externo
+    const response = await userServiceLogin(email, password);
     if (response.success) {
       setUser(response.user);
     }
@@ -42,7 +26,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Hook customizado para usar o contexto de autenticação
 export const useAuth = () => {
   return useContext(AuthContext);
 };

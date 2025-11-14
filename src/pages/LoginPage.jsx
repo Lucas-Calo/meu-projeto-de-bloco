@@ -71,7 +71,10 @@ const LoginPage = () => {
             <strong>Professor:</strong> <code>professor@learnflix.com</code> / <code>123456</code>
           </p>
           <p>
-            <strong>Aluno:</strong> <code>aluno@learnflix.com</code> / <code>123456</code>
+            <strong>Aluno 1:</strong> <code>aluno@learnflix.com</code> / <code>123456</code>
+          </p>
+             <p>
+            <strong>Aluno 2:</strong> <code>aluno2@learnflix.com</code> / <code>123456</code>
           </p>
           <p>
             <strong>Gestor:</strong> <code>gestor@learnflix.com</code> / <code>123456</code>
