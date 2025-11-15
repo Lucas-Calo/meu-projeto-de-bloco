@@ -3,19 +3,16 @@ import { Link } from 'react-router-dom';
 import { useAtividades } from '../contexts/AtividadeContext';
 import DashboardLayout from '../components/DashboardLayout';
 import CitacaoDoDia from '../components/CitacaoDoDia';
-import CardAtividade from '../components/CardAtividade'; //
-import './ProfessorDashboard.css';
+import CardAtividade from '../components/CardAtividade';
+import './ProfessorDashboard.css'; 
 
 const ProfessorDashboard = () => {
   const { atividades } = useAtividades();
-
-  // Lógica da Citação
   const [citacao, setCitacao] = useState(null);
   const [loadingCitacao, setLoadingCitacao] = useState(true);
 
   useEffect(() => {
     const fetchCitacao = async () => {
-      // ... (lógica de fetch da citação) ...
       try {
         const response = await fetch('https://dummyjson.com/quotes/random');
         const data = await response.json();
@@ -45,14 +42,12 @@ const ProfessorDashboard = () => {
         </Link>
       </div>
 
-      {/* O painel agora só lista as atividades */}
       <div className="atividades-lista">
         <h2>Minhas Atividades</h2>
         {atividades.length === 0 ? (
           <p>Você ainda não criou nenhuma atividade.</p>
         ) : (
           atividades.map(atividade => (
-            // Renderiza o componente de Card reutilizável
             <CardAtividade 
               key={atividade.id} 
               atividade={atividade} 

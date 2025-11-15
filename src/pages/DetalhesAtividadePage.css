@@ -44,6 +44,9 @@
 .status-detalhes.aguardando-avaliação { background-color: #1E88E5; }
 .status-detalhes.aprovado { background-color: #43A047; }
 .status-detalhes.reprovado { background-color: #D32F2F; }
+.status-detalhes.professor {
+  background-color: var(--purple-primary);
+}
 
 .detalhes-card {
   background: var(--white);
@@ -72,7 +75,6 @@
   background-color: #f7f3fa;
 }
 
-/* --- Estilos para a nova Seção de Ações --- */
 .detalhes-card.acoes {
   background-color: #f7f3fa;
   border: 1px dashed var(--purple-primary);
@@ -131,27 +133,96 @@
   border-radius: 4px;
 }
 
+.lista-entregas-professor {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.entrega-aluno-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  border: 1px solid var(--gray-light);
+}
+
+.info-aluno {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.status-entrega {
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--white);
+  text-transform: uppercase;
+  margin-left: 0.75rem;
+}
+
+.status-entrega.pendente { background-color: var(--orange-accent); }
+.status-entrega.aguardando-avaliação { background-color: #1E88E5; }
+.status-entrega.aprovado { background-color: #43A047; }
+.status-entrega.reprovado { background-color: #D32F2F; }
+
+.acoes-professor {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btn-acao-prof {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-avaliar-sm {
+  background-color: #43A047;
+}
+
+.feedback-info {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.professor-geral {
+  margin-top: 1.5rem; 
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-light);
+}
+
 /*  Estilos para Telas Maiores (Desktop) */
 @media (min-width: 769px) {
   .detalhes-container {
-    padding: 2rem; /* Padding maior no desktop */
+    padding: 2rem; 
   }
 
   .detalhes-header {
-    flex-direction: row; /* Lado a lado no desktop */
+    flex-direction: row;
     align-items: center;
-    margin-bottom: 2rem; /* Margem maior no desktop */
+    margin-bottom: 2rem;
   }
 
   .detalhes-header h1 {
-    font-size: 1.8rem; /* Título maior no desktop */
+    font-size: 1.8rem;
   }
 
   .datas-grid {
-    grid-template-columns: 1fr 1fr; /* Duas colunas no desktop */
+    grid-template-columns: 1fr 1fr;
   }
-
-  /* ALINHAMENTO DOS BOTÕES */
   
   .acoes-botoes-container {
     display: flex;
@@ -166,5 +237,20 @@
   
   .detalhes-card.acoes > .btn-acao {
      width: 100%;
+  }
+
+    .entrega-aluno-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .info-aluno {
+    flex-wrap: nowrap;
+    flex-grow: 1;
+  }
+
+  .acoes-professor {
+    flex-shrink: 0;
   }
 }

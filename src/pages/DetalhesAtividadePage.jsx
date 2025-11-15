@@ -3,47 +3,34 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAtividades } from '../contexts/AtividadeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useSwipeable } from 'react-swipeable';
+import { getAllUsers } from '../services/userService'; 
 import './DetalhesAtividadePage.css';
 
 const DetalhesAtividadePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
   const { user } = useAuth(); 
-  const { atividades, updateStatusAtividade, deleteAtividade } = useAtividades();
 
-  // Encontra a atividade correspondente
+  const { atividades, entregarAtividade, avaliarEntrega, deleteAtividade } = useAtividades();
+
   const atividade = atividades.find(a => a.id === parseInt(id));
-
-  // --- Funções de Ação ---
 
   const handleEntregar = (e) => {
     e.preventDefault();
-    const dataDeEntregaDoAluno = new Date();
-    updateStatusAtividade(parseInt(id), { 
-      status: 'Aguardando Avaliação',
-      dataEntregaAluno: dataDeEntregaDoAluno.toISOString()
-    });
+    entregarAtividade(atividade.id, user.id);
   };
 
-  const handleAvaliar = (e) => {
+  const handleAvaliar = (e, alunoId) => {
     e.preventDefault();
-    const nota = prompt("Digite a nota da atividade (0 a 10):");
+    const nota = prompt(`Digite a nota para o aluno (0 a 10):`);
     if (nota === null || nota.trim() === '' || isNaN(nota) || nota < 0 || nota > 10) {
       alert("Nota inválida. A avaliação foi cancelada.");
       return;
     }
-    const feedback = prompt("Digite um feedback para o aluno:");
+    const feedback = prompt(`Digite o feedback para o aluno:`);
     if (feedback === null) return;
 
-    const notaNum = parseFloat(nota);
-    const statusFinal = notaNum >= 6 ? 'Aprovado' : 'Reprovado';
-
-    updateStatusAtividade(parseInt(id), {
-      status: statusFinal,
-      nota: notaNum,
-      feedback: feedback.trim() === '' ? 'Sem feedback.' : feedback
-    });
+    avaliarEntrega(atividade.id, alunoId, parseFloat(nota), feedback);
   };
 
   const handleDelete = (e) => {
@@ -54,8 +41,7 @@ const DetalhesAtividadePage = () => {
     }
   };
 
-  // --- Função Auxiliar ---
-
+  //  Função Auxiliar
   const formatarData = (dataString) => {
     if (!dataString) return 'N/A';
     const data = new Date(dataString);
@@ -65,66 +51,133 @@ const DetalhesAtividadePage = () => {
     return `${dia}/${mes}/${ano}`;
   };
 
-  // Configuração do Gesto de Arrastar
+  //  Configuração do Gesto 
   const handlers = useSwipeable({
-    onSwipedRight: () => navigate(-1), // Volta para a página anterior
+    onSwipedRight: () => navigate(-1),
     preventScrollOnSwipe: true,
-    trackMouse: true // Permite testar com o mouse
+    trackMouse: true
   });
 
   if (!atividade) {
-    return (
-      <div className="detalhes-container">
-        <p>Atividade não encontrada.</p>
-        <button onClick={() => navigate(-1)} className="btn-voltar">Voltar</button>
-      </div>
-    );
+    return <div>Atividade não encontrada.</div>
   }
 
-  // Variáveis de controle
+  // --- Lógica de Visualização ---
   const isProfessor = user.profile === 'Professor';
   const isAluno = user.profile === 'Aluno';
-  const status = atividade.status;
+
+  // Encontra a entrega específica DESTE aluno logado
+  const minhaEntrega = isAluno ? atividade.entregas[user.id] : null;
+
+  const statusAlunoLogado = minhaEntrega ? minhaEntrega.status : 'Pendente';
+
+  // Se for professor, busca a lista de todos os alunos
+  const listaDeAlunos = isProfessor ? getAllUsers().filter(u => u.profile === 'Aluno') : [];
 
   return (
-    // Aplica os 'handlers' do swipe na div principal
     <div className="detalhes-container" {...handlers}>
       <button onClick={() => navigate(-1)} className="btn-voltar">← Voltar</button>
       
       <div className="detalhes-header">
         <h1>{atividade.nome}</h1>
-        <span className={`status-detalhes ${status?.toLowerCase().replace(' ', '-')}`}>
-          {status}
-        </span>
+        {/* O Aluno vê o SEU status; Professor vê "Visão Geral" */}
+        {isAluno && (
+          <span className={`status-detalhes ${statusAlunoLogado.toLowerCase().replace(' ', '-')}`}>
+            {statusAlunoLogado}
+          </span>
+        )}
+        {isProfessor && (
+          <span className="status-detalhes professor">
+            Visão do Professor
+          </span>
+        )}
       </div>
 
-      {/* Seção de Ações */}
-      <div className="detalhes-card acoes">
-        <h2>Ações</h2>
-        
-        {/* Ações do Aluno */}
-        {isAluno && status === 'Pendente' && (
-          <button onClick={handleEntregar} className="btn-acao btn-entregar">
-            Entregar Atividade
-          </button>
-        )}
-        {isAluno && status !== 'Pendente' && (
-          <p className="acao-info">Você já entregou esta atividade.</p>
-        )}
+      {/* --- Seção de Ações (Aluno) --- */}
+      {isAluno && (
+        <div className="detalhes-card acoes">
+          <h2>Minha Entrega</h2>
+          {statusAlunoLogado === 'Pendente' && (
+            <button onClick={handleEntregar} className="btn-acao btn-entregar">
+              Entregar Atividade
+            </button>
+          )}
+          {statusAlunoLogado !== 'Pendente' && (
+            <p className="acao-info">Você entregou esta atividade em: {formatarData(minhaEntrega.dataEntregaAluno)}.</p>
+          )}
+        </div>
+      )}
 
-        {/* Ações do Professor */}
-        {isProfessor && (status === 'Aprovado' || status === 'Reprovado') && (
-           <span className="status-corrigido">✓ Atividade Corrigida</span>
+      {/* --- Detalhes Gerais da Atividade --- */}
+      <div className="detalhes-card">
+        <h2>Descrição</h2>
+        <p>{atividade.descricao}</p>
+      </div>
+      <div className="datas-grid">
+        <div className="detalhes-card">
+          <h2>Prazo Final</h2>
+          <p>{formatarData(atividade.dataEntrega)}</p>
+        </div>
+        {/* O aluno vê a sua data de entrega (se houver) */}
+        {isAluno && minhaEntrega && (
+          <div className="detalhes-card">
+            <h2>Data da Entrega</h2>
+            <p>{formatarData(minhaEntrega.dataEntregaAluno)}</p>
+          </div>
         )}
+      </div>
 
-        {/* Agrupa os botões do professor para alinhamento correto */}
-        {isProfessor && (status === 'Pendente' || status === 'Aguardando Avaliação') && (
-          <div className="acoes-botoes-container">
-            {status === 'Aguardando Avaliação' && (
-              <button onClick={handleAvaliar} className="btn-acao btn-avaliar">
-                Avaliar Entrega
-              </button>
+      {/*Feedback (Aluno) */}
+      {isAluno && (statusAlunoLogado === 'Aprovado' || statusAlunoLogado === 'Reprovado') && (
+        <div className="detalhes-card avaliacao">
+          <h2>Avaliação do Professor</h2>
+          <p><strong>Nota:</strong> {minhaEntrega.nota}</p>
+          <p><strong>Feedback:</strong> {minhaEntrega.feedback}</p>
+        </div>
+      )}
+
+      {/* VISÃO DO PROFESSOR*/}
+      {isProfessor && (
+        <div className="detalhes-card">
+          <h2>Entregas dos Alunos</h2>
+          <div className="lista-entregas-professor">
+            {listaDeAlunos.length === 0 ? (
+              <p>Não há alunos cadastrados.</p>
+            ) : (
+              listaDeAlunos.map(aluno => {
+                // Para cada aluno, encontramos a sua entrega
+                const entregaDoAluno = atividade.entregas[aluno.id];
+                const statusDoAluno = entregaDoAluno ? entregaDoAluno.status : 'Pendente';
+
+                return (
+                  <div key={aluno.id} className="entrega-aluno-card">
+                    <div className="info-aluno">
+                      <strong>{aluno.name}</strong>
+                      <span className={`status-entrega ${statusDoAluno.toLowerCase().replace(' ', '-')}`}>
+                        {statusDoAluno}
+                      </span>
+                    </div>
+                    
+                    {/* Botões de ação do professor por aluno */}
+                    <div className="acoes-professor">
+                      {statusDoAluno === 'Aguardando Avaliação' && (
+                        <button onClick={(e) => handleAvaliar(e, aluno.id)} className="btn-acao-prof btn-avaliar-sm">
+                          Avaliar
+                        </button>
+                      )}
+                      {(statusDoAluno === 'Aprovado' || statusDoAluno === 'Reprovado') && (
+                        <div className="feedback-info">
+                          <span>Nota: {entregaDoAluno.nota}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
             )}
+          </div>
+          {/* Ações gerais da atividade (Editar/Deletar) */}
+          <div className="acoes-botoes-container professor-geral">
             <Link 
               to={`/professor/editar-atividade/${atividade.id}`} 
               state={{ atividade: atividade }}
@@ -136,33 +189,9 @@ const DetalhesAtividadePage = () => {
               Deletar Atividade
             </button>
           </div>
-        )}
-      </div>
-
-      {/* Resto dos Detalhes*/}
-      <div className="detalhes-card">
-        <h2>Descrição</h2>
-        <p>{atividade.descricao}</p>
-      </div>
-
-      <div className="datas-grid">
-        <div className="detalhes-card">
-          <h2>Prazo Final</h2>
-          <p>{formatarData(atividade.dataEntrega)}</p>
-        </div>
-        <div className="detalhes-card">
-          <h2>Entregue pelo Aluno</h2>
-          <p>{formatarData(atividade.dataEntregaAluno)}</p>
-        </div>
-      </div>
-
-      {(status === 'Aprovado' || status === 'Reprovado') && (
-        <div className="detalhes-card avaliacao">
-          <h2>Avaliação do Professor</h2>
-          <p><strong>Nota:</strong> {atividade.nota}</p>
-          <p><strong>Feedback:</strong> {atividade.feedback}</p>
         </div>
       )}
+
     </div>
   );
 };

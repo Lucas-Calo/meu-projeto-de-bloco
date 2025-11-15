@@ -1,4 +1,3 @@
-/* Base (Mobile First)*/
 .card-atividade {
   display: block;
   background: var(--white);
@@ -91,8 +90,10 @@
 }
 
 /* Destaques de Status (Professor) */
-.card-atividade.professor.status-aguardando-avaliação { border-left-color: #1E88E5; }
-.card-atividade.professor.status-aprovado { border-left-color: #43A047; }
+.card-atividade.professor.status-aguardando-avaliação,
+.card-atividade.professor.status-a-avaliar { border-left-color: #1E88E5; }
+.card-atividade.professor.status-aprovado,
+.card-atividade.professor.status-corrigido { border-left-color: #43A047; }
 .card-atividade.professor.status-reprovado { border-left-color: #D32F2F; }
 
 /* Estilos para telas maiores (Desktop) */

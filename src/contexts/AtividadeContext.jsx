@@ -2,30 +2,38 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AtividadeContext = createContext();
 
+// Função auxiliar para carregar do localStorage de forma segura
+const carregarDoLocalStorage = (chave, valorPadrao) => {
+  const dadosSalvos = localStorage.getItem(chave);
+  if (dadosSalvos) {
+    try {
+      return JSON.parse(dadosSalvos);
+    } catch (e) {
+      console.error("Falha ao ler o localStorage", e);
+      return valorPadrao;
+    }
+  }
+  return valorPadrao;
+};
+
 export const AtividadeProvider = ({ children }) => {
   
-  // MUDANÇA 1: Leitura Inicial
-  // Usei uma função no useState para que ele só leia o localStorage
-  // uma vez, quando o componente é montado.
-  const [atividades, setAtividades] = useState(() => {
-    const dadosSalvos = localStorage.getItem('atividades');
-    if (dadosSalvos) {
-      return JSON.parse(dadosSalvos); // Retorna os dados salvos
-    }
-    return []; // Retorna um array vazio se não houver nada salvo
-  });
+  const [atividades, setAtividades] = useState(() => 
+    carregarDoLocalStorage('atividades', [])
+  );
 
-  // MUDANÇA 2: Gravação Automática
-  // Este useEffect "escuta" por qualquer mudança no estado 'atividades'
-  // e o salva no localStorage.
+  // Gravação Automática (sem alterações)
+  // Salva no localStorage sempre que o estado 'atividades' mudar
   useEffect(() => {
     localStorage.setItem('atividades', JSON.stringify(atividades));
-  }, [atividades]); // O 'gatilho' é o próprio estado 'atividades'
+  }, [atividades]);
+
+  //Funções do Professor
 
   const addAtividade = (atividade) => {
     setAtividades(prevAtividades => [
       ...prevAtividades, 
-      { ...atividade, id: Date.now(), status: 'Pendente' }
+      { ...atividade, id: Date.now(), entregas: {} } 
     ]);
   };
 
@@ -41,11 +49,64 @@ export const AtividadeProvider = ({ children }) => {
     );
   };
 
-  const updateStatusAtividade = (id, novosDados) => {
+  //Funções de Entrega
+
+  /**
+   * Função para um aluno entregar uma atividade
+   * @param {number} atividadeId - O ID da atividade
+   * @param {number | string} alunoId - O ID do aluno que está a entregar
+   */
+  const entregarAtividade = (atividadeId, alunoId) => {
     setAtividades(prevAtividades =>
-      prevAtividades.map(atividade =>
-        atividade.id === id ? { ...atividade, ...novosDados } : atividade
-      )
+      prevAtividades.map(atividade => {
+        if (atividade.id === atividadeId) {
+      
+          const novaEntrega = {
+            status: 'Aguardando Avaliação',
+            dataEntregaAluno: new Date().toISOString(),
+            nota: null,
+            feedback: null
+          };
+        
+          const novasEntregas = { ...atividade.entregas, [alunoId]: novaEntrega };
+          return { ...atividade, entregas: novasEntregas };
+        }
+        return atividade;
+      })
+    );
+  };
+
+  /**
+   * Função para um professor avaliar uma entrega específica
+   * @param {number} atividadeId - O ID da atividade
+   * @param {number | string} alunoId - O ID do aluno a ser avaliado
+   * @param {number} nota - A nota atribuída
+   * @param {string} feedback - O feedback do professor
+   */
+  const avaliarEntrega = (atividadeId, alunoId, nota, feedback) => {
+    const notaNum = parseFloat(nota);
+    const statusFinal = notaNum >= 6 ? 'Aprovado' : 'Reprovado';
+    
+    setAtividades(prevAtividades =>
+      prevAtividades.map(atividade => {
+        if (atividade.id === atividadeId) {
+          const entregaAtual = atividade.entregas[alunoId];
+          if (!entregaAtual) return atividade;
+
+          // Atualiza a entrega
+          const entregaAvaliada = {
+            ...entregaAtual,
+            nota: notaNum,
+            feedback: feedback,
+            status: statusFinal
+          };
+
+          // Atualiza o objeto 'entregas' da atividade
+          const novasEntregas = { ...atividade.entregas, [alunoId]: entregaAvaliada };
+          return { ...atividade, entregas: novasEntregas };
+        }
+        return atividade;
+      })
     );
   };
 
@@ -54,8 +115,9 @@ export const AtividadeProvider = ({ children }) => {
       atividades, 
       addAtividade, 
       deleteAtividade, 
-      updateAtividade, 
-      updateStatusAtividade 
+      updateAtividade,
+      entregarAtividade, 
+      avaliarEntrega
     }}>
       {children}
     </AtividadeContext.Provider>

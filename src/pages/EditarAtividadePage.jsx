@@ -1,93 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useAtividades } from '../contexts/AtividadeContext';
-import './CriarAtividadePage.css';
+import FormAtividade from '../components/FormAtividade'; 
 
 const EditarAtividadePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { updateAtividade } = useAtividades();
-  
-  const atividadeParaEditar = location.state?.atividade;
+  const { state } = useLocation();
+  const { updateAtividade, atividades } = useAtividades();
 
-  const [formData, setFormData] = useState({
-    nome: '',
-    descricao: '',
-    dataEntrega: ''
-  });
-
-  const [error, setError] = useState('');
-  const atividadeId = parseInt(id, 10);
-
-  // O useEffect agora inicializa o objeto formData
-  useEffect(() => {
-    if (atividadeParaEditar) {
-      setFormData({
-        nome: atividadeParaEditar.nome,
-        descricao: atividadeParaEditar.descricao,
-        dataEntrega: atividadeParaEditar.dataEntrega
-      });
-    }
-  }, [atividadeParaEditar]);
-
-  const handleChange = (e) => {
-    const { id, value } = e.target; // Pega o 'id' e 'value' do input
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      [id]: value // Atualiza o campo correspondente no objeto de estado
-    }));
+  const handleEditar = (formData) => {
+    updateAtividade(parseInt(id), formData);
+    navigate('/professor/dashboard'); 
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Valida os dados a partir do objeto formData
-    const { nome, descricao, dataEntrega } = formData;
+  const dadosIniciais = state?.atividade || atividades.find(a => a.id === parseInt(id));
 
-    if (!nome || !descricao || !dataEntrega) {
-      setError('Todos os campos são obrigatórios!');
-      return;
-    }
-    
-    // Passa o objeto formData inteiro para a função de atualização
-    updateAtividade(atividadeId, formData);
-    navigate('/professor/dashboard');
-  };
+  if (!dadosIniciais) {
+    return (
+      <div style={{ padding: '2rem' }}>
+        <h2>Atividade não encontrada</h2>
+        <button onClick={() => navigate('/professor/dashboard')}>Voltar ao Painel</button>
+      </div>
+    );
+  }
 
   return (
-    <div className="form-container">
-      <form className="activity-form" onSubmit={handleSubmit}>
-        <h2>Editar Atividade</h2>
-        {error && <p className="error-message">{error}</p>}
-        <div className="input-group">
-          <label htmlFor="nome">Nome da Atividade:</label>
-          <input 
-            type="text" 
-            id="nome" 
-            value={formData.nome} 
-            onChange={handleChange} 
-          />
-        </div>
-        <div className="input-group">
-          <label htmlFor="descricao">Descrição:</label>
-          <textarea 
-            id="descricao" 
-            value={formData.descricao} 
-            onChange={handleChange} 
-          />
-        </div>
-        <div className="input-group">
-          <label htmlFor="dataEntrega">Data de Entrega:</label>
-          <input 
-            type="date" 
-            id="dataEntrega" 
-            value={formData.dataEntrega} 
-            onChange={handleChange} 
-          />
-        </div>
-        <button type="submit" className="submit-button">Salvar Alterações!</button>
-      </form>
-    </div>
+    <FormAtividade 
+      onSubmit={handleEditar}
+      dadosIniciais={dadosIniciais}
+      textoBotao="Salvar Edição"
+    />
   );
 };
 
