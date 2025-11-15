@@ -1,16 +1,10 @@
-// src/services/userService.js
-
-// 1. Movemos a lista de usuários para cá.
-// Deixamos ela fora de qualquer função para que possa ser exportada:
-const users = [
+let users = [
   { id: 1, email: 'aluno@learnflix.com', password: '123456', profile: 'Aluno', name: 'Lucas Caló' },
-  { id: 2, email: 'professor@learnflix.com', password: '123456', profile: 'Professor', name: 'Thiago Vieira de Aguiar' },
+  { id: 2, email: 'professor@learnflix.com', password: '123456', profile: 'Professor', name: 'Prof. Thiago Vieira de Aguiar' },
   { id: 3, email: 'gestor@learnflix.com', password: '123456', profile: 'Gestor', name: 'Gestor Admin' },
-  // Podemos adicionar mais usuários para os testes de estatística:
   { id: 4, email: 'aluno2@learnflix.com', password: '123456', profile: 'Aluno', name: 'Cristiano Ronaldo' },
 ];
 
-// 2. A função de login agora estará aqui:
 export const login = async (email, password) => {
   const user = users.find(u => u.email === email && u.password === password);
   if (user) {
@@ -19,11 +13,29 @@ export const login = async (email, password) => {
   return { success: false, message: 'Credenciais inválidas' };
 };
 
-// 3. Nova função para o Gestor poder contar os usuários
 export const getAllUsers = () => {
-  // Retorna uma cópia da lista de usuários
   return [...users];
 };
 
-// Futuramente, podemos adicionar:
-// export const registerUser = (newUser) => { ... }
+/**
+ * Adiciona um novo usuário à lista 'users'
+ * @param {object} userData - { name, email, password, profile }
+ * @returns {Array} A nova lista completa de usuários
+ */
+export const registerUser = (userData) => {
+  // Verifica se o email já existe
+  const emailExists = users.some(u => u.email === userData.email);
+  if (emailExists) {
+    // Retorna um erro (ou a lista antiga)
+    alert('Erro: Este e-mail já está cadastrado.');
+    return null;
+  }
+
+  const newUser = {
+    ...userData,
+    id: Date.now()
+  };
+  
+  users.push(newUser);
+  return [...users]; 
+};

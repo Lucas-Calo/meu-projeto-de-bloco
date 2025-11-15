@@ -1,0 +1,57 @@
+.user-form {
+  background: #fdfaff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--gray-light);
+  margin-top: 1rem;
+}
+
+/* Estilos dos campos (reutilizados) */
+.user-form .input-group {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.user-form .input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* Regra para inputs E selects */
+.user-form .input-group input,
+.user-form .input-group textarea,
+.user-form .input-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--gray-light);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.user-form .submit-button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--orange-accent);
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.user-form .submit-button:hover {
+  background-color: var(--orange-light);
+}
+
+.user-form .error-message {
+    color: red;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}

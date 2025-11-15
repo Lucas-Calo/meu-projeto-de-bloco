@@ -1,25 +1,48 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import { useAtividades } from '../contexts/AtividadeContext';
-import { getAllUsers } from '../services/userService';
+import { getAllUsers, registerUser } from '../services/userService';
+import FormCadastroUsuario from '../components/FormCadastroUsuario';
 import './GestorDashboard.css';
 
 const GestorDashboard = () => {
   const { atividades } = useAtividades();
-  const todosUsuarios = getAllUsers(); // Puxa a lista de usuários do serviço
+  
+  //Armazena a lista de usuários no ESTADO para que seja dinâmica
+  const [userList, setUserList] = useState(() => getAllUsers());
+  //Armazena as estatísticas no ESTADO
+  const [stats, setStats] = useState({ totalAlunos: 0, totalProfessores: 0, totalAtividades: 0 });
 
-  // Calcula as estatísticas
-  const stats = useMemo(() => {
-    const totalAlunos = todosUsuarios.filter(u => u.profile === 'Aluno').length;
-    const totalProfessores = todosUsuarios.filter(u => u.profile === 'Professor').length;
+  // Efeito que recalcula as estatísticas QUANDO a lista de usuários MUDAR
+  useEffect(() => {
+    const totalAlunos = userList.filter(u => u.profile === 'Aluno').length;
+    const totalProfessores = userList.filter(u => u.profile === 'Professor').length;
     const totalAtividades = atividades.length;
     
-    return { totalAlunos, totalProfessores, totalAtividades };
-  }, [atividades, todosUsuarios]);
+    setStats({ totalAlunos, totalProfessores, totalAtividades });
+  }, [userList, atividades]); 
+
+  // Função que será chamada pelo formulário
+  const handleRegister = (formData) => {
+    const newList = registerUser(formData);
+    if (newList) {
+      setUserList(newList);
+      alert('Usuário cadastrado com sucesso!');
+    }
+  };
+
+  const formatarData = (dataString) => {
+    if (!dataString) return 'N/A';
+    const data = new Date(dataString);
+    const dia = String(data.getUTCDate()).padStart(2, '0');
+    const mes = String(data.getUTCMonth() + 1).padStart(2, '0');
+    const ano = data.getUTCFullYear();
+    return `${dia}/${mes}/${ano}`;
+  };
 
   return (
     <DashboardLayout title="Painel do Gestor">
-      {/* 3. Renderiza os cards de estatística */}
+      {/* Cards de estatísticas */}
       <div className="stats-container">
         <div className="stat-card">
           <h2>Alunos Cadastrados</h2>
@@ -35,14 +58,64 @@ const GestorDashboard = () => {
         </div>
       </div>
 
-      {/* Espaço para as próximas funcionalidades (Item 2 e 3 do backlog) */}
       <div className="gestor-listas">
-        <h2>Listas Gerais (Em breve)</h2>
-        <p>Em breve, você poderá ver e gerenciar todos os usuários e atividades aqui.</p>
-        <h2>Cadastrar Novo Usuário (Em breve)</h2>
-        <p>Em breve, o formulário de cadastro de novos usuários estará aqui.</p>
-      </div>
+        
+        {/* Lista de Usuários */}
+        <div className="lista-section">
+          <h2>Todos os Usuários ({userList.length})</h2>
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>E-mail</th>
+                  <th>Perfil</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userList.map(user => (
+                  <tr key={user.id}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.profile}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
+        {/* Lista de Atividades */}
+        <div className="lista-section">
+          <h2>Todas as Atividades ({atividades.length})</h2>
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome da Atividade</th>
+                  <th>Data de Entrega</th>
+                  <th>Nº de Entregas</th>
+                </tr>
+              </thead>
+              <tbody>
+                {atividades.map(atividade => (
+                  <tr key={atividade.id}>
+                    <td>{atividade.nome}</td>
+                    <td>{formatarData(atividade.dataEntrega)}</td>
+                    <td>{Object.keys(atividade.entregas).length}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="lista-section">
+          <h2>Cadastrar Novo Usuário</h2>
+          <FormCadastroUsuario onSubmit={handleRegister} />
+        </div>
+
+      </div>
     </DashboardLayout>
   );
 };
