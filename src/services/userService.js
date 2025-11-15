@@ -3,7 +3,7 @@ const USERS_STORAGE_KEY = 'usuarios';
 // Lista Padrão
 const usuariosPadrao = [
   { id: 1, email: 'aluno@learnflix.com', password: '123456', profile: 'Aluno', name: 'Lucas Caló' },
-  { id: 2, email: 'prof@learnflix.com', password: '123456', profile: 'Professor', name: 'Prof. Thiago Vieira de Aguiar' },
+  { id: 2, email: 'professor@learnflix.com', password: '123456', profile: 'Professor', name: 'Prof. Thiago Vieira de Aguiar' },
   { id: 3, email: 'gestor@learnflix.com', password: '123456', profile: 'Gestor', name: 'Gestor Admin' },
   { id: 4, email: 'aluno2@learnflix.com', password: '123456', profile: 'Aluno', name: 'Cristiano Ronaldo' },
 ];
